@@ -4,15 +4,12 @@ require_relative "tower"
 
 class Game
   attr_reader :starting_disks
-  attr_accessor :move_number, :tower_1, :tower_2, :tower_3, :towers
+  attr_accessor :move_number, :towers
 
   def initialize(starting_disks=4)
     @starting_disks = starting_disks
     @move_number    = 0
-    @tower_1        = Tower.new((1..starting_disks).to_a)
-    @tower_2        = Tower.new
-    @tower_3        = Tower.new
-    @towers         = [tower_1, tower_2, tower_3]
+    @towers         = [Tower.new((1..starting_disks).to_a), Tower.new, Tower.new]
   end
 
   def play
@@ -29,14 +26,7 @@ class Game
 
   def perform(move)
     towers.each {|tower| tower.remove if tower.top_disk == move.disk }
-    case move.tower
-    when "tower_1"
-      tower_1.add(move.disk)
-    when "tower_2"
-      tower_2.add(move.disk)
-    when "tower_3"
-      tower_3.add(move.disk)
-    end
+    move.tower.add(move.disk)
   end
 
   def current_game_state
